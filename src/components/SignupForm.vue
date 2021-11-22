@@ -12,6 +12,12 @@
           <option value='Designer'>Web Designer</option>
       </select>
 
+      <label>Skills:</label>
+      <input type="text" v-model='tempSkill' @keyup.alt="addSkill" />
+      <div v-for='skill in skills' :key='skill' class='pill'>
+          <span>{{ skill }}</span>
+        <button @click='removeSkill(skill)'>x</button>
+</div>
       <div class='terms'>
             <input type='checkbox' v-model='terms' required />
             <label>I agree to the terms and conditions</label>
@@ -24,7 +30,6 @@
   <p>Job Role: {{ role }}</p>
   <p>Terms Accepted: {{ terms }}</p>
 
-
 </template>
 
 <script>
@@ -35,9 +40,24 @@ export default {
             email: '',
             password: '',
             role: '',
-            terms: false
+            terms: false,
+            tempSkill: '',
+            skills: []
         }
     },
+    methods: {
+        addSkill(e) {
+            if (e.key === ',' && this.tempSkill) {
+                if (!this.skills.includes(this.tempSkill)) {
+                    this.skills.push(this.tempSkill)
+                }
+                this.tempSkill = ''
+            }
+        },
+        removeSkill(e) {
+            this.skills.splice(this.skills.indexOf(e), 1)
+        }
+    }
 }
 </script>
 
@@ -77,5 +97,18 @@ input[type='checkbox']{
     margin: 0 10px 0 0;
     position: relative;
     top: 2px;
+}
+
+.pill {
+    display: inline-block;
+    margin: 20px 10px 0 0;
+    padding: 6px 12px;
+    background: #eee;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
 }
 </style>
